@@ -75,13 +75,11 @@ class CommentForm extends Component {
         " comment: " +
         this.comment.value
     );
-    alert(
-      "rating: " +
-        this.rating.value +
-        " name: " +
-        this.name.value +
-        " comment: " +
-        this.comment.value
+    this.props.addComment(
+      this.props.dishId,
+      this.rating.value,
+      this.name.value,
+      this.comment.value
     );
     event.preventDefault();
   }
@@ -162,7 +160,7 @@ function RenderDish({ dish }) {
   else return <div></div>;
 }
 
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, dishId }) {
   const commentsToDisplay = comments.map((comment) => {
     return (
       <>
@@ -186,7 +184,7 @@ function RenderComments({ comments }) {
     <>
       <h4>Comments</h4>
       <div>{commentsToDisplay}</div>
-      <CommentForm />
+      <CommentForm dishId={dishId} addComment={addComment} />
     </>
   );
 }
@@ -212,7 +210,11 @@ const DishDetail = (props) => {
         </div>
         <div className="col-12 col-md-5 m-1">
           {props.comments ? (
-            <RenderComments comments={props.comments} />
+            <RenderComments
+              comments={props.comments}
+              addComment={props.addComment}
+              dishId={props.dish.id}
+            />
           ) : (
             <></>
           )}
